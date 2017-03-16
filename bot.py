@@ -77,13 +77,13 @@ def slack_say(message):
     r = requests.post(url, data=json.dumps(slack_data))
 
 def main():
-    menu = "\n" + get_eth_menu() + get_uzh_menu()
+    menu = "\n" + get_eth_menu() + get_uzh_menu() + "\n\nTHAT'S WHAT SHE SAID OHHHHHHHHHHHH"
     
     if DEBUG:
-        print(menu.rstrip())
+        print(menu)
         return
 
-    slack_say(menu.rstrip()) 
+    slack_say(menu) 
 
 if __name__ == "__main__":
     main()
