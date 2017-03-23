@@ -7,6 +7,7 @@ import locale
 import calendar
 import datetime
 import pytz
+import random
 
 DEBUG = False
 NOW = datetime.datetime.now(pytz.timezone("Europe/Zurich"))
@@ -76,8 +77,12 @@ def slack_say(message):
     url = "https://hooks.slack.com/services/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"
     r = requests.post(url, data=json.dumps(slack_data))
 
+def get_serbian_profanity():
+    options = ["Bog te jebo!", "U picku materinu!", "Duckaj ga!", "Glup ko kurac!", "Izes mi spermu!", "Jebem te u mozak!"]
+    return options[random.randint(0, len(options) - 1)]
+
 def main():
-    menu = "\n" + get_eth_menu() + get_uzh_menu() + "\n\nTHAT'S WHAT SHE SAID OHHHHHHHHHHHH"
+    menu = "\n" + get_eth_menu() + get_uzh_menu() + "\n\n" + get_serbian_profanity()
     
     if DEBUG:
         print(menu)
