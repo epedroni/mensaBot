@@ -78,7 +78,7 @@ def slack_say(message):
     r = requests.post(url, data=json.dumps(slack_data))
 
 def get_serbian_profanity():
-    options = ["Bog te jebo!", "U picku materinu!", "Duckaj ga!", "Glup ko kurac!", "Izes mi spermu!", "Jebem te u mozak!"]
+    options = ["Dabogda komsiji crkla krava!", "Ode sve u kurac!", "Duckaj ga!", "Jedi muda ciganska dlakava!", "Izes mi spermu!", "U kurac materinin!"]
     return options[random.randint(0, len(options) - 1)]
 
 def main():
