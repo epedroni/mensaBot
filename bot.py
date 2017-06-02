@@ -35,15 +35,16 @@ def uzh_parse_table(table):
             menu += " ".join(para[i].text.split()).strip() + "\n\n"
     return menu
 
-def get_eth_menu():
-    r = requests.get("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
-    
+def get_eth_menu(url):
+
+    r = requests.get(url)
+
     if ETH_MENSA_NOMEAL_STR in r.text:
         return "No ETH menu available for this day!"
 
     table = BeautifulSoup(r.text, "html.parser").findAll("table")
 
-    return "*Polymensa:*\n\n" + eth_parse_table(table)
+    return eth_parse_table(table)
 
 def get_uzh_menu():
     # UZH URL actually has the weekday in german
@@ -64,6 +65,12 @@ def get_uzh_menu():
         
     return "*Cheap mensa:*\n\n" + uzh_parse_table(menu_div)
 
+def get_poly_menu():
+    return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+
+def get_asian_menu():
+    return "*Clausiubar:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=4&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+
 def is_lunchtime():
     return int(NOW.strftime("%H")) < 14
 
@@ -77,12 +84,11 @@ def slack_say(message):
     url = "https://hooks.slack.com/services/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"
     r = requests.post(url, data=json.dumps(slack_data))
 
-def get_serbian_profanity():
-    options = ["Dabogda komsiji crkla krava!", "Ode sve u kurac!", "Duckaj ga!", "Jedi muda ciganska dlakava!", "Izes mi spermu!", "U kurac materinin!"]
-    return options[random.randint(0, len(options) - 1)]
+def get_easter_egg():
+    return "*ALL HAIL SMARTBOT*"
 
 def main():
-    menu = "\n" + get_eth_menu() + get_uzh_menu() + "\n\n" + get_serbian_profanity()
+    menu = "\n" + get_poly_menu() + get_uzh_menu() + get_asian_menu()  + "\n\n" + get_easter_egg()
     
     if DEBUG:
         print(menu)
