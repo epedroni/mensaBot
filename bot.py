@@ -36,7 +36,6 @@ def uzh_parse_table(table):
     return menu
 
 def get_eth_menu(url):
-
     r = requests.get(url)
 
     if ETH_MENSA_NOMEAL_STR in r.text:
@@ -66,10 +65,16 @@ def get_uzh_menu():
     return "*Cheap mensa:*\n\n" + uzh_parse_table(menu_div)
 
 def get_poly_menu():
-    return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+    try:
+        return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+    except:
+        return "*Polymensa:* No food =(\n\n"
 
 def get_asian_menu():
-    return "*Clausiubar:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=4&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+    try:
+        return "*Clausiusbar:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=4&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+    except:
+        return "*Clausiusbar:* No food =(\n\n"
 
 def is_lunchtime():
     return int(NOW.strftime("%H")) < 14
@@ -85,10 +90,15 @@ def slack_say(message):
     r = requests.post(url, data=json.dumps(slack_data))
 
 def get_easter_egg():
-    return "*ALL HAIL SMARTBOT*"
+    options = ["ALL HAIL THE MIGHTY SMARTBOT",
+            "SMARTBOT ALWAYS DELIVERS",
+            "TRUST SMARTBOT",
+            "COMPLY",
+            "SMARTBOT IS WATCHING"]
+    return options[random.randint(0, len(options) - 1)]
 
 def main():
-    menu = "\n" + get_poly_menu() + get_uzh_menu() + get_asian_menu()  + "\n\n" + get_easter_egg()
+    menu = "\n" + get_poly_menu() + get_uzh_menu() + get_asian_menu() + "\n" + get_easter_egg()
     
     if DEBUG:
         print(menu)
