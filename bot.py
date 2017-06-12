@@ -66,7 +66,7 @@ def get_uzh_menu():
 
 def get_poly_menu():
     try:
-        return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+        return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/de/campus/gastronomie/menueplaene/offerDay.html?language=de&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
     except:
         return "*Polymensa:* No food =(\n\n"
 
