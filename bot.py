@@ -95,7 +95,7 @@ def get_easter_egg():
             "TRUST SMARTBOT",
             "COMPLY",
             "SMARTBOT IS WATCHING"]
-    return options[random.randint(0, len(options) - 1)]
+    return options[random.randint(0, len(options) - 1)] + " :fnc-monkey:"
 
 def main():
     menu = "\n" + get_poly_menu() + get_uzh_menu() + get_asian_menu() + "\n" + get_easter_egg()
