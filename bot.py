@@ -109,7 +109,7 @@ def main():
         print(menu)
         return
 
-    #slack_say(menu) 
+    slack_say(menu) 
     mattermost_say(menu)
 
 if __name__ == "__main__":
