@@ -87,7 +87,12 @@ def remove_line_breaks(element):
 def slack_say(message):
     slack_data = {"channel":"#vippartyroom", "username": "mensamenu", "text": message}
     url = "https://hooks.slack.com/services/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"
-    r = requests.post(url, data=json.dumps(slack_data))
+    requests.post(url, data=json.dumps(slack_data))
+
+def mattermost_say(message):
+    mm_data = {"text": message}
+    url = "https://chat.serber.club/hooks/kf56noezwtd43n8whisdh1rido"
+    requests.post(url, data=json.dumps(mm_data))
 
 def get_easter_egg():
     options = ["ALL HAIL THE MIGHTY SMARTBOT",
@@ -104,7 +109,8 @@ def main():
         print(menu)
         return
 
-    slack_say(menu) 
+    #slack_say(menu) 
+    mattermost_say(menu)
 
 if __name__ == "__main__":
     main()
