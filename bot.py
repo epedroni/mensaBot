@@ -9,7 +9,7 @@ import datetime
 import pytz
 import random
 
-DEBUG = True
+DEBUG = False
 NOW = datetime.datetime.now(pytz.timezone("Europe/Zurich"))
 ETH_MENSA_NOMEAL_STR = "No lunch menu today."
 UZH_MENSA_NOMEAL_STR = "{}.{}.{}".format(NOW.day, NOW.strftime("%m"), NOW.year)
