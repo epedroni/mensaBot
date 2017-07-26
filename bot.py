@@ -9,7 +9,7 @@ import datetime
 import pytz
 import random
 
-DEBUG = False
+DEBUG = True
 NOW = datetime.datetime.now(pytz.timezone("Europe/Zurich"))
 ETH_MENSA_NOMEAL_STR = "No lunch menu today."
 UZH_MENSA_NOMEAL_STR = "{}.{}.{}".format(NOW.day, NOW.strftime("%m"), NOW.year)
@@ -51,7 +51,7 @@ def get_uzh_menu():
     curr_day = str(calendar.day_name[(int(NOW.strftime("%w"))+6)%7]).lower()
 
     if is_lunchtime():
-        url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mensa/{}.html"
+        url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mercato/{}.html"
     else:
         url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mercato-abend/{}.html"
     r = requests.get(url.format(curr_day))
