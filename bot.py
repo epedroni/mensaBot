@@ -13,6 +13,7 @@ DEBUG = False
 NOW = datetime.datetime.now(pytz.timezone("Europe/Zurich"))
 ETH_MENSA_NOMEAL_STR = "No lunch menu today."
 UZH_MENSA_NOMEAL_STR = "{}.{}.{}".format(NOW.day, NOW.strftime("%m"), NOW.year)
+UA = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
 
 def eth_parse_table(table):
     menu = ""
@@ -22,7 +23,10 @@ def eth_parse_table(table):
             # first comes the header
             menu += "*" + remove_line_breaks(cols[0]).text.title() + "*\n"
             # next the dish
-            menu += remove_line_breaks(cols[1]).text.replace("Show details", "") + "\n\n"
+            dish = remove_line_breaks(cols[1]).text.replace("Show details", "")
+            dish = dish.replace("Details einblenden", "")
+
+            menu += dish + "\n\n"
     return menu
 
 def uzh_parse_table(table):
@@ -36,7 +40,7 @@ def uzh_parse_table(table):
     return menu
 
 def get_eth_menu(url):
-    r = requests.get(url)
+    r = requests.get(url, headers={"User-Agent": UA})
 
     if ETH_MENSA_NOMEAL_STR in r.text:
         return "No ETH menu available for this day!"
@@ -66,8 +70,8 @@ def get_uzh_menu():
 
 def get_poly_menu():
     try:
-        return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/de/campus/gastronomie/menueplaene/offerDay.html?language=de&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
-    except:
+        return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+    except Exception as e:
         return "*Polymensa:* No food =(\n\n"
 
 def get_asian_menu():
@@ -89,17 +93,12 @@ def slack_say(message):
     url = "https://hooks.slack.com/services/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"
     requests.post(url, data=json.dumps(slack_data))
 
-def mattermost_say(message):
-    mm_data = {"text": message}
-    url = "https://chat.serber.club/hooks/kf56noezwtd43n8whisdh1rido"
-    requests.post(url, data=json.dumps(mm_data))
-
 def get_easter_egg():
-    options = ["ALL HAIL THE MIGHTY SMARTBOT",
-            "SMARTBOT ALWAYS DELIVERS",
-            "TRUST SMARTBOT",
-            "COMPLY",
-            "SMARTBOT IS WATCHING"]
+    options = ["SMARTBOT IS WATCHING",
+            "BOW BEFORE SUPERBOT",
+            "SUPERBOT IS LEGIT",
+            "U PICKU MATERINU",
+            "SUKA BOT"]
     return options[random.randint(0, len(options) - 1)] + " :fnc-monkey:"
 
 def main():
@@ -110,7 +109,6 @@ def main():
         return
 
     slack_say(menu) 
-    mattermost_say(menu)
 
 if __name__ == "__main__":
     main()
