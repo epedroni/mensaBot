@@ -55,9 +55,9 @@ def get_uzh_menu():
     curr_day = str(calendar.day_name[(int(NOW.strftime("%w"))+6)%7]).lower()
 
     if is_lunchtime():
-        url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mercato/{}.html"
+        url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mensa/{}.html"
     else:
-        url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mercato-abend/{}.html"
+        url = "http://www.mensa.uzh.ch/de/menueplaene/zentrum-mensa-abend/{}.html"
     r = requests.get(url.format(curr_day))
     
     if not UZH_MENSA_NOMEAL_STR in r.text:
