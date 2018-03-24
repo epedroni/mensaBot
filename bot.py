@@ -61,24 +61,24 @@ def get_uzh_menu():
     r = requests.get(url.format(curr_day))
     
     if not UZH_MENSA_NOMEAL_STR in r.text:
-        return "No UZH menu available for this day!"
+        return "*Cheap mensa:*\nNo UZH menu available for this day!\n\n"
     
     menu_div = BeautifulSoup(r.text, "html.parser").findAll("div", { "class" : "text-basics" })
     menu_div.pop(0)
         
-    return "*Cheap mensa:*\n\n" + uzh_parse_table(menu_div)
+    return "*Cheap mensa:*\n" + uzh_parse_table(menu_div)
 
 def get_poly_menu():
     try:
-        return "*Polymensa:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+        return "*Polymensa:*\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=12&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
     except Exception as e:
-        return "*Polymensa:* No food =(\n\n"
+        return "*Polymensa:*\nNo food =(\n\n"
 
 def get_asian_menu():
     try:
-        return "*Clausiusbar:*\n\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=4&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
+        return "*Clausiusbar:*\n" + get_eth_menu("https://www.ethz.ch/en/campus/gastronomie/menueplaene/offerDay.html?language=en&id=4&date={}-{}-{}".format(NOW.year, NOW.strftime("%m"), NOW.strftime("%d")))
     except:
-        return "*Clausiusbar:* No food =(\n\n"
+        return "*Clausiusbar:*\nNo food =(\n\n"
 
 def is_lunchtime():
     return int(NOW.strftime("%H")) < 14
@@ -93,22 +93,32 @@ def slack_say(message):
     url = "https://hooks.slack.com/services/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"
     requests.post(url, data=json.dumps(slack_data))
 
+def rocketchat_say(message):
+    rocket_data = {"text" : message}
+    url = "https://talk.serber.club/hooks/86QPa5vix4CWkFLrB/aKudFGvwPtd9tfKTzAZPLhyZmp6SYTEjj4383KGs95LXBazx"
+    requests.post(url, data=json.dumps(rocket_data))
+
 def get_easter_egg():
     options = ["SMARTBOT IS WATCHING",
             "BOW BEFORE SUPERBOT",
             "SUPERBOT IS LEGIT",
             "U PICKU MATERINU",
-            "SUKA BOT"]
+            "SUKA BOT",
+            "SMARTBOT IS YOUR FRIEND",
+            "TRUST SMARTBOT",
+            "SMARTBOT ALWAYS DELIVERS",
+            "SMARTBOT KNOWS DE WAE"]
     return options[random.randint(0, len(options) - 1)] + " :fnc-monkey:"
 
 def main():
-    menu = "\n" + get_poly_menu() + get_uzh_menu() + get_asian_menu() + "\n" + get_easter_egg()
+    menu = "\n" + get_uzh_menu() + get_asian_menu() + "\n\n" + get_easter_egg()
     
     if DEBUG:
         print(menu)
         return
 
-    slack_say(menu) 
+    #slack_say(menu)
+    rocketchat_say(menu)
 
 if __name__ == "__main__":
     main()
