@@ -95,7 +95,7 @@ def slack_say(message):
 
 def rocketchat_say(message):
     rocket_data = {"text" : message}
-    url = "https://talk.serber.club/hooks/86QPa5vix4CWkFLrB/aKudFGvwPtd9tfKTzAZPLhyZmp6SYTEjj4383KGs95LXBazx"
+    url = "https://talk.serber.club/hooks/uBQr9rKLvYKKgZzRN/BccPSWFdZEqqBXmaonzP2srBo4zTR45xDrgLm3tQnferGTnJ"
     requests.post(url, data=json.dumps(rocket_data))
 
 def get_easter_egg():
